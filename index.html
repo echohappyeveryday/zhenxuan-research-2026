@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <title>2026暑期研学·精选合集 | 看见·中国</title>
+  <meta name="description" content="甄选研学2026年暑期研学精选合集，25+条精品线路，教培机构专属合作通道">
+
+  <!--
+  ================================================================
+  【修改指南】
+  ================================================================
+
+  一、替换21张线路海报图片：
+  在下方 CSS 变量区域找到 "--img-XX" 变量（XX为线路序号），
+  将 url('line-XX-地名.jpg') 替换为实际图片路径或Base64即可。
+  也可直接在 HTML 中找到对应 <div class="card-img"> 替换 background-image。
+
+  二、修改联系方式：
+  搜索 "【联系方式-修改区】" 标签，替换热线、微信、公司名即可。
+
+  三、调整「看见·中国」文字效果：
+  搜索 "【IP核心区-样式调整】" 标签，
+  - 修改 .ip-title 的 font-size 可调整字号
+  - 修改 .ip-glow 中 animation 可调整呼吸节奏
+  - 修改 .hero-bg-texture 的 opacity 可调整山河纹理浓淡
+
+  四、替换合作政策配图：
+  搜索 "【合作配图-替换区】"，将 src="about-us-cooperation.jpg" 替换为实际图片。
+
+  五、品牌色统一修改：
+  在 :root 变量区域修改 --orange / --orange-light / --bg-cream 即可全局更新。
+  ================================================================
+  -->
+
+  <style>
+    /* ================================================================
+       【全局变量与重置】
+       ================================================================ */
+    :root {
+      --orange: #FF7A45;        /* 主暖橙色 */
+      --orange-light: #FFEBD2;  /* 浅橙色 */
+      --bg-cream: #FFF8F0;      /* 米白背景 */
+      --orange-dark: #E85E2A;   /* 深橙（悬浮/按压） */
+      --orange-mid: #FF9B6A;    /* 中橙（渐变用） */
+      --text-dark: #2D1A0A;     /* 深色文字 */
+      --text-mid: #6B3D1E;      /* 中色文字 */
+      --text-light: #C97A4A;    /* 浅色文字 */
+      --white: #FFFFFF;
+      --shadow: 0 4px 20px rgba(255,122,69,0.18);
+      --shadow-card: 0 2px 12px rgba(0,0,0,0.10);
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+                   "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-cream);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ================================================================
+       【IP核心区-样式调整】 首屏Hero Banner
+       ================================================================ */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+      background: #1A0A00;
+    }
+
+    /* 纯灰色渐变背景 */
+    .hero-bg-texture {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* 首屏背景图片 - 60%透明度 */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background-image: url("hero-bg.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.6;  /* 60%透明度 */
+      pointer-events: none;
+    }
+
+    /* 深色遮罩层 */
+    .hero-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0,0,0,0.5) 0%,
+        rgba(0,0,0,0.3) 50%,
+        rgba(0,0,0,0.6) 100%
+      );
+    }
+
+    /* 移除风景图横移背景 */
+    .hero-carousel-bg {
+      display: none;
+    }
+
+    /* Hero 内容区 - 居中显示 */
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 70vh;  /* 占据首屏70%高度 */
+      padding-top: 0;
+    }
+
+    /* 「看见·中国」超大IP文字 */
+    .ip-title-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    /* 光晕背景 */
+    .ip-glow {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120%;
+      height: 150%;
+      background: radial-gradient(ellipse at center,
+        rgba(255,122,69,0.35) 0%,
+        rgba(255,122,69,0.15) 40%,
+        transparent 70%
+      );
+      animation: glowPulse 3s ease-in-out infinite;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    .ip-title {
+      font-size: clamp(38px, 13.2vw, 72px);
+      font-weight: 900;
+      color: var(--orange);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      text-align: center;
+      animation: ipBreath 3.5s ease-in-out infinite;
+      position: relative;
+      /* 中国风笔触效果：内发光+描边 */
+      -webkit-text-stroke: 1px rgba(255,155,106,0.6);
+      text-shadow:
+        0 0 30px rgba(255,122,69,0.9),
+        0 0 60px rgba(255,122,69,0.5),
+        0 0 100px rgba(255,122,69,0.3),
+        2px 2px 0 rgba(200,60,0,0.4),
+        -1px -1px 0 rgba(255,200,150,0.3);
+      /* 毛笔笔触感 */
+      font-family: "STKaiti", "KaiTi", "华文楷体", "楷体", "STFangsong", serif;
+    }
+
+    @keyframes ipBreath {
+      0%, 100% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.04); filter: brightness(1.15); }
+    }
+
+    /* 「走遍山河，读懂中国」副标题 */
+    .ip-sub {
+      font-size: clamp(14px, 4.2vw, 20px);
+      color: var(--orange-light);
+      letter-spacing: 0.3em;
+      margin-top: 8px;
+      font-weight: 500;
+      text-shadow: 0 0 15px rgba(255,155,106,0.6);
+      opacity: 0.95;
+      animation: ipBreath 3.5s ease-in-out infinite;
+      animation-delay: 0.3s;
+    }
+
+    /* 分割装饰线 */
+    .hero-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0;
+      width: 80%;
+    }
+    .hero-divider::before, .hero-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--orange), transparent);
+      opacity: 0.6;
+    }
+    .hero-divider-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 8px var(--orange);
+    }
+
+    .hero-main-title {
+      font-size: clamp(18px, 5.5vw, 28px);
+      color: var(--white);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-align: center;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .hero-meta {
+      font-size: clamp(11px, 3.2vw, 14px);
+      color: var(--orange-light);
+      text-align: center;
+      letter-spacing: 0.05em;
+      line-height: 1.9;
+      opacity: 0.9;
+      margin-bottom: 14px;
+    }
+
+    .hero-cta-text {
+      background: rgba(255,122,69,0.18);
+      border: 1px solid rgba(255,122,69,0.5);
+      border-radius: 50px;
+      padding: 8px 20px;
+      font-size: clamp(11px, 3.2vw, 14px);
+      color: var(--orange-light);
+      text-align: center;
+      letter-spacing: 0.05em;
+      backdrop-filter: blur(4px);
+      margin-bottom: 20px;
+    }
+
+    .hero-bottom-slogan {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      color: var(--orange-light);
+      letter-spacing: 0.2em;
+      opacity: 0.65;
+      white-space: nowrap;
+    }
+
+    /* 向下箭头 */
+    .hero-arrow {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px; height: 24px;
+      border-right: 2px solid var(--orange-light);
+      border-bottom: 2px solid var(--orange-light);
+      transform: translateX(-50%) rotate(45deg);
+      animation: arrowBounce 1.5s ease-in-out infinite;
+      opacity: 0.6;
+    }
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateX(-50%) rotate(45deg) translateY(0); }
+      50% { transform: translateX(-50%) rotate(45deg) translateY(6px); }
+    }
+
+    /* ================================================================
+       【悬浮按钮区】
+       ================================================================ */
+    .float-btns {
+      position: fixed;
+      right: 16px;
+      bottom: 80px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .float-btn {
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      padding: 11px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(255,122,69,0.5);
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .float-btn:active {
+      transform: scale(0.93);
+      background: var(--orange-dark);
+      box-shadow: 0 2px 8px rgba(255,122,69,0.4);
+    }
+    .float-btn.secondary {
+      background: rgba(255,122,69,0.15);
+      border: 1.5px solid var(--orange);
+      color: var(--orange);
+      box-shadow: none;
+    }
+    .float-btn.secondary:active {
+      background: var(--orange-light);
+    }
+
+    /* ================================================================
+       【通用区块样式】
+       ================================================================ */
+    .section {
+      padding: 40px 16px;
+    }
+
+    .section-title {
+      font-size: clamp(18px, 5vw, 24px);
+      font-weight: 800;
+      color: var(--text-dark);
+      text-align: center;
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+      line-height: 1.4;
+    }
+    .section-title .highlight {
+      color: var(--orange);
+    }
+    .section-title-sub {
+      font-size: 13px;
+      color: var(--text-mid);
+      text-align: center;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .title-deco {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .title-deco::before, .title-deco::after {
+      content: '';
+      width: 30px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--orange));
+    }
+    .title-deco::after {
+      background: linear-gradient(90deg, var(--orange), transparent);
+    }
+    .title-deco-icon {
+      font-size: 18px;
+    }
+
+    /* 橙色按钮通用 */
+    .btn-orange {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      padding: 13px 28px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255,122,69,0.4);
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+    .btn-orange:active {
+      transform: scale(0.95);
+      background: var(--orange-dark);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--orange);
+      color: var(--orange);
+      box-shadow: none;
+    }
+    .btn-outline:active {
+      background: var(--orange-light);
+    }
+
+    /* ================================================================
+       【品牌理念衔接板块】
+       ================================================================ */
+    .brand-section {
+      background: var(--white);
+      padding: 36px 20px;
+    }
+
+    .brand-icons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .brand-icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 60px;
+      max-width: 75px;
+    }
+
+    .brand-icon-circle {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--orange-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .brand-icon-label {
+      font-size: 11px;
+      color: var(--text-mid);
+      text-align: center;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .brand-desc {
+      font-size: 14px;
+      color: var(--text-mid);
+      text-align: center;
+      line-height: 1.9;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+
+    /* ================================================================
+       【线路分类展示板块】
+       ================================================================ */
+    .routes-section {
+      background: var(--bg-cream);
+      padding: 36px 12px;
+    }
+
+    /* 筛选标签 */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 4px 12px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      margin-bottom: 16px;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+
+    .filter-tag {
+      flex-shrink: 0;
+      padding: 7px 16px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1.5px solid var(--orange);
+      color: var(--orange);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      letter-spacing: 0.03em;
+    }
+    .filter-tag.active, .filter-tag:hover {
+      background: var(--orange);
+      color: var(--white);
+      box-shadow: 0 2px 10px rgba(255,122,69,0.35);
+    }
+
+    /* 线路卡片网格 */
+    .routes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .route-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: pointer;
+    }
+    .route-card:hover, .route-card:active {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(255,122,69,0.22);
+    }
+
+    /* 海报图占位 */
+    .card-img {
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      background: linear-gradient(135deg, var(--orange-light) 0%, #FFDFC0 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .card-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, 
+        rgba(255,122,69,0.15) 0%, 
+        rgba(255,155,106,0.08) 100%
+      );
+    }
+    .card-img-placeholder .placeholder-icon {
+      font-size: 32px;
+      opacity: 0.5;
+    }
+    .card-img-placeholder .placeholder-text {
+      font-size: 10px;
+      color: var(--orange);
+      opacity: 0.6;
+      text-align: center;
+      padding: 0 8px;
+    }
+
+    .card-body {
+      padding: 10px 10px 12px;
+    }
+
+    .card-name {
+      font-size: clamp(13px, 3.8vw, 16px);
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 7px;
+      line-height: 1.3;
+      /* 暖橙色描边效果 */
+      -webkit-text-stroke: 0;
+      text-shadow: none;
+    }
+    .card-name .ip-prefix {
+      color: var(--orange);
+      font-family: "STKaiti", "KaiTi", serif;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .tag-days {
+      padding: 2px 8px;
+      background: var(--orange);
+      color: var(--white);
+      border-radius: 50px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .tag-type {
+      padding: 2px 8px;
+      background: var(--orange-light);
+      color: var(--text-mid);
+      border-radius: 50px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .card-btn {
+      width: 100%;
+      padding: 7px 0;
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      letter-spacing: 0.05em;
+    }
+    .card-btn:active {
+      background: var(--orange-dark);
+      transform: scale(0.97);
+    }
+
+    /* ================================================================
+       【线路总览表板块 - 双栏卡片轮播】
+       ================================================================ */
+    .table-section {
+      background: var(--white);
+      padding: 36px 0;
+    }
+
+    .table-outer {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 8px;  /* 左右安全边距 */
+      box-sizing: border-box;
+      overflow: visible;
+    }
+
+    /* 轮播主体 */
+    .table-carousel {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .table-carousel-track {
+      display: flex;
+      overflow: visible;
+    }
+
+    .table-carousel-track {
+      display: flex;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+    /* 每一页：单列布局 */
+    .table-page {
+      flex: 0 0 100%;
+      min-width: 0;
+      display: flex;
+    }
+
+    .table-col {
+      flex: 1;
+      min-width: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+    .table-col-full {
+      flex: 1;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: none;
+    }
+
+    .table-col table {
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .table-col thead tr {
+      background: var(--orange);
+      color: var(--white);
+    }
+
+    .table-col thead th {
+      padding: 10px 10px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .table-col thead th:first-child {
+      border-radius: 12px 0 0 0;
+    }
+    .table-col thead th:last-child {
+      border-radius: 0 12px 0 0;
+    }
+
+    .table-col tbody tr:nth-child(even) {
+      background: var(--orange-light);
+    }
+    .table-col tbody tr:nth-child(odd) {
+      background: var(--white);
+    }
+
+    .table-col tbody td {
+      padding: 8px 10px;
+      color: var(--text-dark);
+      border-bottom: 1px solid rgba(255,122,69,0.08);
+      line-height: 1.4;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .table-col tbody td:first-child {
+      font-weight: 700;
+    }
+    .td-type {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-size: 10px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .type-非遗艺术 { background: #FFE4C8; color: #B85D1A; }
+    .type-自然探索 { background: #D4F5E2; color: #1A7A46; }
+    .type-文史溯源 { background: #E8E0FF; color: #5A3DAA; }
+    .type-城市科创 { background: #D6EDFF; color: #1A5FA8; }
+
+    .table-header-icon {
+      display: inline-block;
+      margin-right: 4px;
+      font-size: 12px;
+    }
+
+    /* ================================================================
+       【4张独立表格样式】
+       ================================================================ */
+    .single-table-wrap {
+      width: 100%;
+      padding: 0;
+    }
+
+    .single-table {
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      border-radius: 0;  /* 圆角由父容器table-carousel-track负责 */
+      overflow: visible;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      background: var(--white);
+    }
+
+    .single-table thead {
+      background: var(--orange);
+      color: var(--white);
+    }
+
+    .single-table thead th {
+      padding: 12px 10px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+
+    .single-table thead th:first-child {
+      border-radius: 12px 0 0 0;
+    }
+
+    .single-table thead th:last-child {
+      border-radius: 0 12px 0 0;
+    }
+
+    .single-table tbody tr:nth-child(even) {
+      background: var(--orange-light);
+    }
+
+    .single-table tbody tr:nth-child(odd) {
+      background: var(--white);
+    }
+
+    .single-table tbody tr.empty-row {
+      background: #f5f5f5;
+    }
+
+    .single-table tbody td {
+      padding: 10px 10px;
+      color: var(--text-dark);
+      border-bottom: 1px solid rgba(255,122,69,0.08);
+      line-height: 1.4;
+      font-size: 12px;
+    }
+
+    .single-table tbody td.td-name {
+      font-weight: 700;
+    }
+
+    .single-table tbody td.td-days {
+      color: var(--text-mid);
+      font-size: 11px;
+    }
+
+    /* 左右箭头 */
+    .carousel-arrow {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(200, 200, 200, 0.6);
+      color: #666;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+      flex-shrink: 0;
+    }
+    .carousel-arrow:hover {
+      background: rgba(180, 180, 180, 0.8);
+    }
+    .carousel-arrow:active {
+      transform: scale(0.9);
+      background: rgba(160, 160, 160, 0.9);
+    }
+    .carousel-arrow.prev { margin-right: 6px; }
+    .carousel-arrow.next { margin-left: 6px; }
+
+    /* 轮播指示器 */
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px 0 4px;
+    }
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--orange-light);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .carousel-dot.active {
+      background: var(--orange);
+      width: 20px;
+      border-radius: 4px;
+    }
+
+    /* ================================================================
+       【合作政策板块】
+       ================================================================ */
+    .coop-section {
+      background: var(--bg-cream);
+      padding: 36px 16px;
+    }
+
+    .coop-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 600px) {
+      .coop-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 【合作配图-替换区】*/
+    .coop-img-wrap {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 2.5px solid var(--orange);
+      box-shadow: 0 4px 20px rgba(255,122,69,0.25);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    .coop-img-wrap img {
+      width: 70%;  /* 缩小到70% */
+      display: block;
+      object-fit: contain;
+    }
+
+    /* 配图占位（待替换时显示） */
+    .coop-img-placeholder {
+      width: 100%;
+      min-height: 320px;
+      background: linear-gradient(135deg, var(--orange-light), #FFD5B0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px;
+    }
+    .coop-img-placeholder .coop-placeholder-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--orange);
+      text-align: center;
+    }
+    .coop-img-placeholder .coop-placeholder-sub {
+      font-size: 12px;
+      color: var(--text-mid);
+      text-align: center;
+      line-height: 1.6;
+    }
+    .coop-advantages {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+    }
+    .coop-adv-item {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 12px 10px;
+      text-align: center;
+      border: 1px solid rgba(255,122,69,0.2);
+    }
+    .coop-adv-icon { font-size: 22px; margin-bottom: 4px; }
+    .coop-adv-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--orange);
+    }
+
+    .coop-rights {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .coop-right-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .coop-right-icon {
+      width: 40px; height: 40px;
+      min-width: 40px;
+      border-radius: 10px;
+      background: var(--orange-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .coop-right-text h4 {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 3px;
+      line-height: 1.3;
+    }
+    .coop-right-text p {
+      font-size: 12px;
+      color: var(--text-mid);
+      line-height: 1.5;
+    }
+
+    .coop-btn-area {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* ================================================================
+       【联系我们板块】
+       ================================================================ */
+    .contact-section {
+      background: linear-gradient(180deg, #1A0A00 0%, #2D1200 100%);
+      padding: 48px 20px 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-section::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255,122,69,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .contact-section .section-title {
+      color: var(--white);
+    }
+    .contact-section .section-title .highlight {
+      color: var(--orange);
+    }
+
+    .contact-desc {
+      font-size: 14px;
+      color: rgba(255,235,210,0.8);
+      line-height: 1.8;
+      margin-bottom: 32px;
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .contact-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .contact-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,122,69,0.3);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .contact-icon {
+      width: 48px; height: 48px;
+      min-width: 48px;
+      border-radius: 12px;
+      background: rgba(255,122,69,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .contact-info h4 {
+      font-size: 13px;
+      color: var(--orange-light);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .contact-info p {
+      font-size: 15px;
+      color: var(--white);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .contact-info .sub {
+      font-size: 11px;
+      color: rgba(255,235,210,0.6);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    /* 二维码图片容器 */
+    .qr-wrap {
+      width: 100px;
+      min-width: 100px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid rgba(255,122,69,0.3);
+    }
+
+    .qr-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* 页脚品牌 */
+    .footer-brand {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,122,69,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-ip {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--orange);
+      font-family: "STKaiti", "KaiTi", serif;
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 20px rgba(255,122,69,0.5);
+    }
+
+    .footer-brand-name {
+      font-size: 12px;
+      color: rgba(255,235,210,0.5);
+      letter-spacing: 0.15em;
+    }
+
+    .footer-slogan {
+      font-size: 12px;
+      color: var(--orange-light);
+      letter-spacing: 0.2em;
+      opacity: 0.65;
+      margin-top: 4px;
+    }
+
+    /* ================================================================
+       【响应式适配】
+       ================================================================ */
+    @media (min-width: 600px) {
+      .routes-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) {
+      .routes-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .hero-content {
+        padding-top: 100px;
+      }
+    }
+
+    /* ================================================================
+       【卡片隐藏/显示（筛选用）】
+       ================================================================ */
+    .route-card.hidden {
+      display: none;
+    }
+
+    /* ================================================================
+       【滚动动画】
+       ================================================================ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ================================================================
+       【IP核心区】首屏Banner
+       ================================================================ -->
+  <section class="hero" id="hero">
+
+    <!-- 山河纹理背景 -->
+    <div class="hero-bg-texture"></div>
+    <!-- 渐变遮罩 -->
+    <div class="hero-overlay"></div>
+
+    <!-- 风景图横移背景 -->
+    <div class="hero-carousel-bg" aria-hidden="true">
+      <div class="scene-track" id="sceneTrack">
+        <!-- 由JS插入6张SVG风景 x2（无缝循环） -->
+      </div>
+    </div>
+
+    <!-- 主内容 -->
+    <div class="hero-content">
+
+      <!-- 「看见·中国」IP核心文字 -->
+      <div class="ip-title-wrap">
+        <div class="ip-glow"></div>
+        <h1 class="ip-title">看见·中国</h1>
+        <p class="ip-sub">走遍山河，读懂中国</p>
+      </div>
+
+      <!-- 分割线 -->
+      <div class="hero-divider">
+        <div class="hero-divider-dot"></div>
+        <div class="hero-divider-dot"></div>
+        <div class="hero-divider-dot"></div>
+      </div>
+
+      <!-- 主标题 -->
+      <h2 class="hero-main-title">2026 暑期研学 · 精选合集</h2>
+
+      <!-- 副标题 -->
+      <div class="hero-meta">
+        25+条精品线路 &nbsp;|&nbsp; 4大品类<br>
+        全年龄段适配 &nbsp;|&nbsp; 教培机构专属合作
+      </div>
+
+      <!-- 核心引导文案 -->
+      <div class="hero-cta-text">
+        📍 教培校长专属通道 | 锁定爆款线路，开启暑期招生新增长
+      </div>
+
+    </div>
+
+    <!-- 底部 Slogan -->
+    <div class="hero-bottom-slogan">让每个脚印都长出故事</div>
+
+    <!-- 向下箭头 -->
+    <div class="hero-arrow" aria-hidden="true"></div>
+
+  </section>
+
+
+  <!-- ================================================================
+       【品牌理念衔接板块】
+       ================================================================ -->
+  <section class="brand-section section fade-in">
+    <div class="title-deco">
+      <span class="title-deco-icon">🧭</span>
+    </div>
+    <h2 class="section-title">
+      <span class="highlight">「看见·中国」</span>研学系列<br>为成长而来
+    </h2>
+    <p class="section-title-sub">
+      25+条线路覆盖科创、文史、非遗、自然四大领域<br>带孩子走遍中国，触摸文化根脉
+    </p>
+
+    <div class="brand-icons">
+      <div class="brand-icon-item">
+        <div class="brand-icon-circle">🔬</div>
+        <div class="brand-icon-label">城市<br>科创</div>
+      </div>
+      <div class="brand-icon-item">
+        <div class="brand-icon-circle">📜</div>
+        <div class="brand-icon-label">文史<br>溯源</div>
+      </div>
+      <div class="brand-icon-item">
+        <div class="brand-icon-circle">🎨</div>
+        <div class="brand-icon-label">非遗<br>艺术</div>
+      </div>
+      <div class="brand-icon-item">
+        <div class="brand-icon-circle">🌿</div>
+        <div class="brand-icon-label">自然<br>探索</div>
+      </div>
+    </div>
+
+    <p class="brand-desc">
+      甄选全国精品目的地研学<br>每条线路均经专业策划团队深度打磨<br>为教培机构提供一站式研学合作解决方案
+    </p>
+  </section>
+
+
+  <!-- ================================================================
+       【线路卡片区】线路分类展示板块
+       ================================================================ -->
+  <section class="routes-section" id="routes">
+    <div class="title-deco">
+      <span class="title-deco-icon">🗺️</span>
+    </div>
+    <h2 class="section-title fade-in">
+      2026 <span class="highlight">「看见·中国」</span><br>暑期精选研学线路
+    </h2>
+
+    <!-- 筛选标签 -->
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-tag active" data-filter="all">全部</button>
+      <button class="filter-tag" data-filter="城市科创">城市科创</button>
+      <button class="filter-tag" data-filter="文史溯源">文史溯源</button>
+      <button class="filter-tag" data-filter="非遗艺术">非遗艺术</button>
+      <button class="filter-tag" data-filter="自然探索">自然探索</button>
+      <button class="filter-tag" data-filter="3天2晚">3天2晚</button>
+      <button class="filter-tag" data-filter="4天3晚">4天3晚</button>
+      <button class="filter-tag" data-filter="5天4晚">5天4晚</button>
+      <button class="filter-tag" data-filter="6天5晚">6天5晚</button>
+      <button class="filter-tag" data-filter="7天6晚">7天6晚</button>
+    </div>
+
+    <!-- 线路卡片网格 -->
+    <div class="routes-grid" id="routesGrid">
+      <!-- 卡片由JS生成 -->
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       【线路总览表板块】
+       ================================================================ -->
+  <section class="table-section section fade-in" id="table-section">
+    <div class="title-deco">
+      <span class="title-deco-icon">📋</span>
+    </div>
+    <h2 class="section-title">
+      <span class="highlight">「看见·中国」</span>线路速览<br>一键选型
+    </h2>
+    <p class="section-title-sub">25+条精品线路全览，快速锁定心仪目的地</p>
+
+    <!-- 4张表格轮播 -->
+    <div class="table-outer">
+      <button class="carousel-arrow prev" id="tablePrev" aria-label="上一页">‹</button>
+      <div class="table-carousel">
+        <div class="table-carousel-track" id="tableTrack">
+          <!-- 4张独立表格由JS生成 -->
+        </div>
+      </div>
+      <button class="carousel-arrow next" id="tableNext" aria-label="下一页">›</button>
+    </div>
+    <div class="carousel-dots" id="carouselDots">
+      <!-- 圆点由JS生成 -->
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       【合作政策板块】To B 转化核心
+       ================================================================ -->
+  <section class="coop-section section fade-in" id="coop">
+    <div class="title-deco">
+      <span class="title-deco-icon">🤝</span>
+    </div>
+    <h2 class="section-title">
+      <span class="highlight">「看见·中国」</span><br>专属合作支持
+    </h2>
+    <p class="section-title-sub">教培机构专属合作权益，0经验也能做研学</p>
+
+    <div class="coop-layout">
+
+      <!-- 左侧：合作配图 -->
+      <div class="coop-img-wrap">
+        <img src="about-us-cooperation.jpg" alt="趣研学合作优势" loading="lazy" class="coop-img">
+      </div>
+
+      <!-- 右侧：核心合作权益 -->
+      <div class="coop-rights">
+        <div class="coop-right-item">
+          <div class="coop-right-icon">📣</div>
+          <div class="coop-right-text">
+            <h4>「看见·中国」全套招生物料</h4>
+            <p>海报/长图/文案/朋友圈素材直接复用，一键启动，招生无忧</p>
+          </div>
+        </div>
+        <div class="coop-right-item">
+          <div class="coop-right-icon">🏃</div>
+          <div class="coop-right-text">
+            <h4>全流程招募陪跑</h4>
+            <p>教培机构0经验也能做，专业团队全程支持</p>
+          </div>
+        </div>
+        <div class="coop-right-item">
+          <div class="coop-right-icon">✏️</div>
+          <div class="coop-right-text">
+            <h4>1V1线路定制</h4>
+            <p>结合「看见·中国」打造专属产品，差异化竞争</p>
+          </div>
+        </div>
+        <div class="coop-right-item">
+          <div class="coop-right-icon">🛡️</div>
+          <div class="coop-right-text">
+            <h4>专业安全保障体系</h4>
+            <p>校区零风险运营，每一步都有保障</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="coop-btn-area">
+      <a href="#contact" class="btn-orange">🤝 立即咨询合作</a>
+      <a href="#contact" class="btn-orange btn-outline">获取「看见·中国」合作方案</a>
+    </div>
+  </section>
+
+
+  <!-- ================================================================
+       【联系我们板块】尾屏转化闭环
+       ================================================================ -->
+  <section class="contact-section" id="contact">
+
+    <h2 class="section-title fade-in">
+      锁定<span class="highlight">「看见·中国」</span><br>暑期爆款，抢占招生先机
+    </h2>
+
+    <p class="contact-desc">
+      
+    </p>
+
+    <!-- 【联系方式-修改区】 -->
+    <div class="contact-cards">
+
+      <div class="contact-card">
+        <div class="contact-icon">💬</div>
+        <div class="contact-info" style="flex:1">
+          <h4>扫码添加，微信咨询</h4>
+          <p style="font-size:13px">获取「看见·中国」线路清单&研学招募物料</p>
+          <div class="sub"></div>
+        </div>
+        <!-- 二维码图片 -->
+        <div class="qr-wrap">
+          <img src="wechat-qrcode.jpg" alt="微信二维码" class="qr-img">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 页脚品牌 -->
+    <div class="footer-brand">
+      <div class="footer-ip">看见·中国</div>
+      <div class="footer-brand-name">甄选研学</div>
+      <div class="footer-slogan">让每个脚印都长出故事</div>
+    </div>
+
+  </section>
+
+
+  <!-- ================================================================
+       【悬浮按钮区】全程悬浮
+       ================================================================ -->
+  <div class="float-btns">
+    <button class="float-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+      立即咨询合作
+    </button>
+    <button class="float-btn secondary" onclick="document.getElementById('routes').scrollIntoView({behavior:'smooth'})">
+      选线路
+    </button>
+  </div>
+
+
+  <!-- ================================================================
+       【JavaScript 核心逻辑】
+       ================================================================ -->
+  <script>
+    // ================================================================
+    // 【线路数据】- 21条线路完整数据
+    // 修改线路信息请在此数组中修改对应项
+    // img: 对应海报图片文件名（与HTML文件同目录，或填写完整URL）
+    // ================================================================
+    const routes = [
+      // ---- 4天3晚 ----
+      { id: 1,  name: '景德镇', days: '4天3晚', type: '非遗艺术', img: "line-01-jingdezhen.jpg" },
+      { id: 2,  name: '泉州',   days: '4天3晚', type: '非遗艺术', img: "line-02-quanzhou.jpg" },
+      { id: 3,  name: '宣城+徽州', days: '4天3晚', type: '非遗艺术', img: "line-03-xuancheng-huizhou.jpg" },
+      { id: 4,  name: '千岛湖', days: '4天3晚', type: '自然探索', img: "line-04-qiandaohu.jpg" },
+      { id: 5,  name: '南京',   days: '4天3晚', type: '城市科创', img: "line-05-nanjing.jpg" },
+      { id: 6,  name: '长沙',   days: '4天3晚', type: '文史溯源', img: "line-06-changsha.jpg" },
+      // ---- 5天4晚 ----
+      { id: 7,  name: '杭州',   days: '5天4晚', type: '城市科创', img: "line-07-hangzhou.jpg" },
+      { id: 8,  name: '北京',   days: '5天4晚', type: '文史溯源', img: "line-08-beijing.jpg" },
+      { id: 9,  name: '上海',   days: '5天4晚', type: '城市科创', img: "line-09-shanghai.jpg" },
+      { id: 10, name: '成都+重庆', days: '5天4晚', type: '非遗艺术', img: "line-10-chengdu-chongqing.jpg" },
+      { id: 11, name: '洛阳+开封+郑州', days: '5天4晚', type: '文史溯源', img: "line-11-luoyang-kaifeng-zhengzhou.jpg" },
+      { id: 12, name: '桂林',   days: '5天4晚', type: '自然探索', img: "line-12-guilin.jpg" },
+      { id: 13, name: '贵州',   days: '5天4晚', type: '非遗艺术', img: "line-13-guizhou.jpg" },
+      { id: 14, name: '西安',   days: '5天4晚', type: '文史溯源', img: "line-14-xian.jpg" },
+      { id: 15, name: '大理',   days: '5天4晚', type: '自然探索', img: "line-15-dali.jpg" },
+      // ---- 6天5晚 ----
+      { id: 16, name: '西双版纳', days: '6天5晚', type: '自然探索', img: "line-16-xishuangbanna.jpg" },
+      { id: 17, name: '宁夏+腾格里沙漠', days: '6天5晚', type: '自然探索', img: "line-17-ningxia-tengger.jpg" },
+      { id: 18, name: '内蒙古', days: '6天5晚', type: '自然探索', img: "line-18-neimenggu.jpg" },
+      { id: 19, name: '敦煌',   days: '6天5晚', type: '非遗艺术', img: "line-19-dunhuang.jpg" },
+      { id: 20, name: '粤港澳', days: '6天5晚', type: '城市科创', img: "line-20-yuegangao.jpg" },
+      // ---- 7天6晚 ----
+      { id: 21, name: '新疆',   days: '7天6晚', type: '自然探索', img: "line-21-xinjiang.jpg" },
+      // ---- 3天2晚 ----
+      { id: 22, name: '无锡',   days: '3天2晚', type: '非遗艺术', img: "line-22-wuxi.jpg" },
+      { id: 23, name: '合肥',   days: '3天2晚', type: '城市科创', img: "line-23-hefei.jpg" },
+      { id: 24, name: '苏州',   days: '3天2晚', type: '城市科创', img: "line-24-suzhou.jpg" },
+      // ---- 4天3晚（补充）----
+      { id: 25, name: '武汉',   days: '4天3晚', type: '城市科创', img: "line-24-wuhan.jpg" },
+      // ---- 5天4晚（补充）----
+      { id: 26, name: '大同',   days: '5天4晚', type: '文史溯源', img: "line-25-datong.jpg" },
+    ];
+
+    // 品类对应 Emoji
+    const typeEmoji = {
+      '非遗艺术': '🎨',
+      '自然探索': '🌿',
+      '文史溯源': '📜',
+      '城市科创': '🔬',
+    };
+
+    // ================================================================
+    // 生成风景图横移背景（6幅SVG：故宫、草原、黄山、西湖、长城、敦煌沙漠）
+    // ================================================================
+    const sceneSVGs = [
+
+      // ① 故宫
+      `<svg viewBox="0 0 400 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a0800"/>
+            <stop offset="60%" stop-color="#5c1e00"/>
+            <stop offset="100%" stop-color="#8b3a00"/>
+          </linearGradient>
+          <linearGradient id="sun1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FFB347"/>
+            <stop offset="100%" stop-color="#FF6B00"/>
+          </linearGradient>
+        </defs>
+        <!-- 天空 -->
+        <rect width="400" height="700" fill="url(#sky1)"/>
+        <!-- 夕阳 -->
+        <circle cx="200" cy="260" r="70" fill="url(#sun1)" opacity="0.5"/>
+        <circle cx="200" cy="260" r="45" fill="#FFAA44" opacity="0.6"/>
+        <!-- 城楼主体 -->
+        <rect x="60" y="420" width="280" height="120" fill="#7A1500" opacity="0.9"/>
+        <!-- 城楼屋顶 -->
+        <polygon points="30,420 200,340 370,420" fill="#9B1C00" opacity="0.95"/>
+        <polygon points="70,420 200,355 330,420" fill="#C42800" opacity="0.8"/>
+        <!-- 屋顶装饰脊 -->
+        <line x1="30" y1="420" x2="200" y2="340" stroke="#FF7A45" stroke-width="2" opacity="0.6"/>
+        <line x1="370" y1="420" x2="200" y2="340" stroke="#FF7A45" stroke-width="2" opacity="0.6"/>
+        <!-- 城楼窗户 -->
+        <rect x="110" y="445" width="40" height="55" rx="5" fill="#3A0000" opacity="0.8"/>
+        <rect x="180" y="445" width="40" height="55" rx="5" fill="#3A0000" opacity="0.8"/>
+        <rect x="250" y="445" width="40" height="55" rx="5" fill="#3A0000" opacity="0.8"/>
+        <!-- 红墙 -->
+        <rect x="0" y="540" width="400" height="80" fill="#8B1A00" opacity="0.95"/>
+        <rect x="0" y="540" width="400" height="8" fill="#A52000"/>
+        <!-- 城门洞 -->
+        <ellipse cx="200" cy="560" rx="50" ry="35" fill="#1a0800" opacity="0.9"/>
+        <!-- 护城河反光 -->
+        <rect x="0" y="620" width="400" height="80" fill="#2A1500" opacity="0.8"/>
+        <ellipse cx="200" cy="640" rx="120" ry="15" fill="#FF6B00" opacity="0.15"/>
+        <!-- 灯笼 -->
+        <ellipse cx="120" cy="415" rx="10" ry="14" fill="#FF2200" opacity="0.8"/>
+        <ellipse cx="280" cy="415" rx="10" ry="14" fill="#FF2200" opacity="0.8"/>
+        <line x1="120" y1="401" x2="120" y2="429" stroke="#FFD700" stroke-width="1" opacity="0.7"/>
+        <line x1="280" y1="401" x2="280" y2="429" stroke="#FFD700" stroke-width="1" opacity="0.7"/>
+      </svg>`,
+
+      // ② 内蒙草原
+      `<svg viewBox="0 0 400 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0D0500"/>
+            <stop offset="50%" stop-color="#3D1500"/>
+            <stop offset="100%" stop-color="#6B2F00"/>
+          </linearGradient>
+          <linearGradient id="grass2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1A3300"/>
+            <stop offset="100%" stop-color="#0D1A00"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="700" fill="url(#sky2)"/>
+        <!-- 月亮 -->
+        <circle cx="300" cy="130" r="45" fill="#FFEBD2" opacity="0.25"/>
+        <circle cx="315" cy="120" r="38" fill="#2A0E00" opacity="0.7"/>
+        <!-- 星星 -->
+        <circle cx="60" cy="80" r="2" fill="white" opacity="0.6"/>
+        <circle cx="140" cy="50" r="1.5" fill="white" opacity="0.5"/>
+        <circle cx="220" cy="90" r="2" fill="white" opacity="0.7"/>
+        <circle cx="330" cy="60" r="1.5" fill="white" opacity="0.5"/>
+        <circle cx="100" cy="140" r="1" fill="white" opacity="0.4"/>
+        <circle cx="360" cy="110" r="2" fill="white" opacity="0.6"/>
+        <circle cx="50" cy="200" r="1" fill="white" opacity="0.3"/>
+        <!-- 草原地面 -->
+        <path d="M0,480 Q100,460 200,475 Q300,490 400,470 L400,700 L0,700Z" fill="url(#grass2)" opacity="0.95"/>
+        <path d="M0,520 Q100,500 200,515 Q300,530 400,510 L400,700 L0,700Z" fill="#0F2000" opacity="0.8"/>
+        <!-- 蒙古包 -->
+        <ellipse cx="150" cy="490" rx="50" ry="18" fill="#5C3D00" opacity="0.9"/>
+        <path d="M100,490 Q150,445 200,490Z" fill="#8B5E00" opacity="0.9"/>
+        <rect x="140" y="475" width="20" height="15" fill="#4A2800" opacity="0.8"/>
+        <!-- 蒙古包2 -->
+        <ellipse cx="290" cy="500" rx="38" ry="14" fill="#5C3D00" opacity="0.85"/>
+        <path d="M252,500 Q290,462 328,500Z" fill="#7A5200" opacity="0.9"/>
+        <!-- 篝火 -->
+        <ellipse cx="220" cy="515" rx="8" ry="3" fill="#FF4400" opacity="0.5"/>
+        <path d="M216,515 Q220,498 224,515" fill="#FF6600" opacity="0.6"/>
+        <circle cx="220" cy="508" r="4" fill="#FFAA00" opacity="0.4"/>
+        <!-- 马群剪影 -->
+        <ellipse cx="320" cy="478" rx="12" ry="6" fill="#1A0800" opacity="0.7"/>
+        <ellipse cx="340" cy="475" rx="10" ry="5" fill="#1A0800" opacity="0.7"/>
+        <ellipse cx="358" cy="480" rx="9" ry="5" fill="#1A0800" opacity="0.65"/>
+        <!-- 远山 -->
+        <path d="M0,380 Q80,340 160,360 Q240,380 320,350 Q360,335 400,355 L400,480 L0,480Z" fill="#1A0800" opacity="0.6"/>
+      </svg>`,
+
+      // ③ 黄山云海
+      `<svg viewBox="0 0 400 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#100500"/>
+            <stop offset="40%" stop-color="#4A1800"/>
+            <stop offset="80%" stop-color="#8B3A00"/>
+            <stop offset="100%" stop-color="#C06020"/>
+          </linearGradient>
+          <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FFEBD2" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#FFEBD2" stop-opacity="0.05"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="700" fill="url(#sky3)"/>
+        <!-- 远山轮廓 -->
+        <path d="M0,380 L60,280 L110,320 L160,240 L220,290 L280,220 L340,270 L400,230 L400,500 L0,500Z" fill="#2A0E00" opacity="0.9"/>
+        <path d="M0,420 L50,350 L100,380 L160,310 L200,340 L260,290 L310,330 L360,300 L400,320 L400,500 L0,500Z" fill="#1A0800" opacity="0.85"/>
+        <!-- 奇松剪影（迎客松） -->
+        <line x1="200" y1="500" x2="200" y2="320" stroke="#0D0500" stroke-width="5" opacity="0.9"/>
+        <path d="M200,380 Q160,340 130,350 Q160,360 200,360" fill="#0D2200" opacity="0.8"/>
+        <path d="M200,370 Q240,330 270,345 Q240,355 200,360" fill="#0D2200" opacity="0.8"/>
+        <path d="M200,340 Q175,310 155,315 Q175,325 200,330" fill="#0D2200" opacity="0.75"/>
+        <path d="M200,335 Q225,305 245,315 Q225,325 200,330" fill="#0D2200" opacity="0.75"/>
+        <!-- 云海 -->
+        <ellipse cx="100" cy="480" rx="140" ry="30" fill="url(#mist)"/>
+        <ellipse cx="320" cy="490" rx="110" ry="25" fill="url(#mist)"/>
+        <ellipse cx="200" cy="510" rx="180" ry="35" fill="url(#mist)"/>
+        <!-- 旭日 -->
+        <circle cx="280" cy="200" r="55" fill="#FF8C00" opacity="0.25"/>
+        <circle cx="280" cy="200" r="35" fill="#FFAA44" opacity="0.35"/>
+        <circle cx="280" cy="200" r="20" fill="#FFDD88" opacity="0.4"/>
+        <!-- 地面岩石 -->
+        <path d="M0,560 Q50,540 100,555 Q150,570 200,555 Q250,540 300,558 Q350,570 400,555 L400,700 L0,700Z" fill="#1A0800" opacity="0.95"/>
+      </svg>`,
+
+      // ④ 西湖断桥
+      `<svg viewBox="0 0 400 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="sky4" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0A0A1A"/>
+            <stop offset="50%" stop-color="#1A0D00"/>
+            <stop offset="100%" stop-color="#5C2800"/>
+          </linearGradient>
+          <linearGradient id="lake4" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0D1A2A"/>
+            <stop offset="100%" stop-color="#050D15"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="700" fill="url(#sky4)"/>
+        <!-- 月亮倒影 -->
+        <circle cx="200" cy="160" r="40" fill="#FFEBD2" opacity="0.2"/>
+        <!-- 远山 -->
+        <path d="M0,360 Q100,300 200,330 Q300,360 400,310 L400,430 L0,430Z" fill="#0D0500" opacity="0.8"/>
+        <!-- 湖面 -->
+        <rect x="0" y="430" width="400" height="270" fill="url(#lake4)" opacity="0.95"/>
+        <!-- 月亮湖面倒影 -->
+        <ellipse cx="200" cy="500" rx="30" ry="60" fill="#FFAA44" opacity="0.08"/>
+        <!-- 断桥 -->
+        <rect x="80" y="415" width="240" height="18" rx="4" fill="#5C3D20" opacity="0.95"/>
+        <rect x="80" y="415" width="240" height="5" rx="2" fill="#8B6040" opacity="0.8"/>
+        <!-- 桥栏杆 -->
+        <rect x="82" y="405" width="4" height="12" fill="#7A5030" opacity="0.9"/>
+        <rect x="102" y="405" width="4" height="12" fill="#7A5030" opacity="0.9"/>
+        <rect x="122" y="405" width="4" height="12" fill="#7A5030" opacity="0.9"/>
+        <rect x="142" y="405" width="4" height="12" fill="#7A5030" opacity="0.9"/>
+        <rect x="162" y="405" width="4" height="12" fill="#7A5030" opacity="0.9"/>
+        <rect x="182" y="405" width="4" height="12" fill="#7A5030" opacity="0.9"/>
+        <rect x="202" y="405" width="4" height="12" fill="#7A5030" opacity="0.9"/>
+        <rect x="222" y="405" width="4" height="12" fill="#7A5030" opacity="0.9"/>
+        <rect x="242" y="405" width="4" height="12" fill="#7A5030" opacity="0.9"/>
+        <rect x="262" y="405" width="4" height="12" fill="#7A5030" opacity="0.9"/>
+        <rect x="282" y="405" width="4" height="12" fill="#7A5030" opacity="0.9"/>
+        <rect x="302" y="405" width="4" height="12" fill="#7A5030" opacity="0.9"/>
+        <line x1="82" y1="407" x2="316" y2="407" stroke="#8B6040" stroke-width="1.5" opacity="0.7"/>
+        <!-- 垂柳 -->
+        <line x1="50" y1="300" x2="50" y2="430" stroke="#1A3300" stroke-width="4" opacity="0.9"/>
+        <path d="M50,320 Q20,360 30,400" stroke="#1A3300" stroke-width="2" fill="none" opacity="0.7"/>
+        <path d="M50,330 Q15,370 25,410" stroke="#1A3300" stroke-width="2" fill="none" opacity="0.6"/>
+        <path d="M50,340 Q25,380 35,415" stroke="#0D2200" stroke-width="1.5" fill="none" opacity="0.5"/>
+        <line x1="350" y1="290" x2="350" y2="420" stroke="#1A3300" stroke-width="3" opacity="0.85"/>
+        <path d="M350,310 Q380,350 370,395" stroke="#1A3300" stroke-width="2" fill="none" opacity="0.6"/>
+        <!-- 湖面涟漪 -->
+        <ellipse cx="200" cy="450" rx="60" ry="8" stroke="#FF7A45" stroke-width="0.5" fill="none" opacity="0.15"/>
+        <ellipse cx="200" cy="450" rx="100" ry="14" stroke="#FF7A45" stroke-width="0.5" fill="none" opacity="0.08"/>
+        <!-- 小舟 -->
+        <path d="M140,445 Q200,435 260,445 Q240,455 160,455Z" fill="#2A1500" opacity="0.8"/>
+      </svg>`,
+
+      // ⑤ 长城
+      `<svg viewBox="0 0 400 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="sky5" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#050510"/>
+            <stop offset="40%" stop-color="#200A00"/>
+            <stop offset="100%" stop-color="#6B2800"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="700" fill="url(#sky5)"/>
+        <!-- 星空 -->
+        <circle cx="30" cy="60" r="1.5" fill="white" opacity="0.5"/>
+        <circle cx="80" cy="40" r="1" fill="white" opacity="0.4"/>
+        <circle cx="160" cy="80" r="2" fill="white" opacity="0.6"/>
+        <circle cx="250" cy="50" r="1.5" fill="white" opacity="0.5"/>
+        <circle cx="330" cy="70" r="1" fill="white" opacity="0.4"/>
+        <circle cx="380" cy="35" r="2" fill="white" opacity="0.6"/>
+        <!-- 远山连绵 -->
+        <path d="M0,350 L40,270 L80,300 L130,230 L180,265 L230,210 L280,250 L330,220 L380,240 L400,230 L400,430 L0,430Z" fill="#1A0800" opacity="0.9"/>
+        <path d="M0,400 L30,340 L70,370 L120,310 L170,345 L220,290 L270,325 L320,295 L370,320 L400,310 L400,430 L0,430Z" fill="#0D0500" opacity="0.85"/>
+        <!-- 长城城墙（蜿蜒） -->
+        <path d="M0,390 Q50,370 100,385 Q150,400 200,380 Q250,360 300,375 Q350,390 400,370" 
+              stroke="#6B4020" stroke-width="14" fill="none" opacity="0.95"/>
+        <!-- 城墙垛口 -->
+        <rect x="8" y="378" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="30" y="372" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="55" y="369" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="80" y="373" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="106" y="378" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="132" y="380" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="158" y="374" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="184" y="368" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="210" y="365" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="238" y="367" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="265" y="370" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="292" y="373" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="318" y="376" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="345" y="370" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <rect x="372" y="363" width="12" height="14" rx="2" fill="#5C3015" opacity="0.95"/>
+        <!-- 烽火台 -->
+        <rect x="190" y="335" width="30" height="50" rx="3" fill="#7A4820" opacity="0.95"/>
+        <rect x="185" y="330" width="40" height="10" rx="2" fill="#8B5A28" opacity="0.9"/>
+        <!-- 朝阳 -->
+        <circle cx="340" cy="200" r="60" fill="#FF6B00" opacity="0.18"/>
+        <circle cx="340" cy="200" r="35" fill="#FF8C00" opacity="0.25"/>
+        <!-- 前景山体 -->
+        <path d="M0,500 Q100,460 200,480 Q300,500 400,470 L400,700 L0,700Z" fill="#0D0500" opacity="0.98"/>
+      </svg>`,
+
+      // ⑥ 敦煌沙漠
+      `<svg viewBox="0 0 400 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="sky6" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#050015"/>
+            <stop offset="40%" stop-color="#1A0A00"/>
+            <stop offset="80%" stop-color="#5C2000"/>
+            <stop offset="100%" stop-color="#9B4000"/>
+          </linearGradient>
+          <linearGradient id="sand6" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5C2800"/>
+            <stop offset="100%" stop-color="#2A1000"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="700" fill="url(#sky6)"/>
+        <!-- 银河 -->
+        <path d="M50,50 Q200,150 350,80" stroke="white" stroke-width="25" fill="none" opacity="0.04"/>
+        <path d="M50,50 Q200,150 350,80" stroke="white" stroke-width="12" fill="none" opacity="0.04"/>
+        <!-- 星星 -->
+        <circle cx="40" cy="40" r="1.5" fill="white" opacity="0.7"/>
+        <circle cx="90" cy="25" r="1" fill="white" opacity="0.6"/>
+        <circle cx="150" cy="55" r="2" fill="white" opacity="0.8"/>
+        <circle cx="200" cy="30" r="1.5" fill="white" opacity="0.6"/>
+        <circle cx="260" cy="50" r="1" fill="white" opacity="0.7"/>
+        <circle cx="310" cy="20" r="2" fill="white" opacity="0.8"/>
+        <circle cx="370" cy="45" r="1.5" fill="white" opacity="0.6"/>
+        <circle cx="120" cy="100" r="1" fill="white" opacity="0.5"/>
+        <circle cx="280" cy="90" r="1.5" fill="white" opacity="0.6"/>
+        <!-- 月牙泉 -->
+        <ellipse cx="200" cy="510" rx="55" ry="22" fill="#0D2A3A" opacity="0.85"/>
+        <ellipse cx="200" cy="510" rx="40" ry="15" fill="#0D1E2A" opacity="0.9"/>
+        <!-- 月牙泉倒影光 -->
+        <ellipse cx="200" cy="515" rx="30" ry="8" fill="#3A7A9B" opacity="0.3"/>
+        <!-- 沙丘 -->
+        <path d="M0,460 Q80,400 160,440 Q240,480 320,430 Q360,410 400,435 L400,700 L0,700Z" fill="url(#sand6)" opacity="0.97"/>
+        <path d="M0,500 Q60,470 120,490 Q200,520 280,490 Q340,470 400,485 L400,700 L0,700Z" fill="#3A1800" opacity="0.95"/>
+        <!-- 沙丘高光线 -->
+        <path d="M0,460 Q80,400 160,440 Q240,480 320,430 Q360,410 400,435" stroke="#FF7A45" stroke-width="1.5" fill="none" opacity="0.25"/>
+        <!-- 骆驼剪影 -->
+        <ellipse cx="290" cy="458" rx="25" ry="12" fill="#1A0800" opacity="0.85"/>
+        <ellipse cx="270" cy="450" rx="10" ry="8" fill="#1A0800" opacity="0.85"/>
+        <!-- 驼峰 -->
+        <ellipse cx="283" cy="444" rx="8" ry="9" fill="#1A0800" opacity="0.85"/>
+        <ellipse cx="300" cy="447" rx="7" ry="7" fill="#1A0800" opacity="0.85"/>
+        <!-- 驼腿 -->
+        <rect x="265" y="468" width="5" height="16" rx="2" fill="#1A0800" opacity="0.8"/>
+        <rect x="278" y="470" width="5" height="14" rx="2" fill="#1A0800" opacity="0.8"/>
+        <rect x="295" y="469" width="5" height="15" rx="2" fill="#1A0800" opacity="0.8"/>
+        <rect x="308" y="467" width="5" height="16" rx="2" fill="#1A0800" opacity="0.8"/>
+        <!-- 鸣沙山 -->
+        <path d="M0,350 Q100,280 200,310 Q300,340 400,270 L400,460 L0,460Z" fill="#2A1000" opacity="0.7"/>
+      </svg>`
+    ];
+
+    function buildCarousel() {
+      const track = document.getElementById('sceneTrack');
+      // 6张 + 再复制6张 实现无缝循环
+      const allScenes = [...sceneSVGs, ...sceneSVGs];
+      allScenes.forEach(svg => {
+        const frame = document.createElement('div');
+        frame.className = 'scene-frame';
+        frame.innerHTML = svg;
+        track.appendChild(frame);
+      });
+    }
+
+    // ================================================================
+    // 生成线路卡片
+    // ================================================================
+    function buildRouteCards() {
+      const grid = document.getElementById('routesGrid');
+      routes.forEach(r => {
+        const card = document.createElement('div');
+        card.className = 'route-card fade-in';
+        card.dataset.type = r.type;
+        card.dataset.days = r.days;
+        card.innerHTML = `
+          <div class="card-img">
+            <img 
+              src="${r.img}" 
+              alt="看见·${r.name} 研学主海报" 
+              loading="lazy"
+              onerror="this.style.display='none'; this.parentElement.querySelector('.card-img-placeholder').style.display='flex';"
+            >
+            <div class="card-img-placeholder" style="display:none;">
+              <div class="placeholder-icon">${typeEmoji[r.type] || '🗺️'}</div>
+              <div class="placeholder-text">看见·${r.name}</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-name">
+              <span class="ip-prefix">看见·</span>${r.name}
+            </div>
+            <div class="card-tags">
+              <span class="tag-days">${r.days}</span>
+              <span class="tag-type">${r.type}</span>
+            </div>
+            <button class="card-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+              咨询合作 →
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // ================================================================
+    // 表格轮播控制
+    // ================================================================
+    let tableCurrentPage = 0;
+    let tableTotalPages = 0;
+    let tableAutoPlayTimer = null;
+
+    function initTableCarousel() {
+      const track = document.getElementById('tableTrack');
+      const dotsContainer = document.getElementById('carouselDots');
+      const prevBtn = document.getElementById('tablePrev');
+      const nextBtn = document.getElementById('tableNext');
+
+      // tableTotalPages 已由 buildTable() 设置
+
+      // 生成圆点
+      dotsContainer.innerHTML = '';
+      for (let i = 0; i < tableTotalPages; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', `第${i + 1}页`);
+        dot.addEventListener('click', () => goToPage(i));
+        dotsContainer.appendChild(dot);
+      }
+
+      // 更新显示
+      function updateCarousel() {
+        track.style.transform = `translateX(-${tableCurrentPage * 100}%)`;
+        document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+          dot.classList.toggle('active', i === tableCurrentPage);
+        });
+      }
+
+      // 跳转到指定页
+      function goToPage(page) {
+        tableCurrentPage = page;
+        updateCarousel();
+        resetAutoPlay();
+      }
+
+      // 上一页
+      prevBtn.addEventListener('click', () => {
+        tableCurrentPage = (tableCurrentPage - 1 + tableTotalPages) % tableTotalPages;
+        updateCarousel();
+        resetAutoPlay();
+      });
+
+      // 下一页
+      nextBtn.addEventListener('click', () => {
+        tableCurrentPage = (tableCurrentPage + 1) % tableTotalPages;
+        updateCarousel();
+        resetAutoPlay();
+      });
+
+      // 自动轮播
+      function startAutoPlay() {
+        tableAutoPlayTimer = setInterval(() => {
+          tableCurrentPage = (tableCurrentPage + 1) % tableTotalPages;
+          updateCarousel();
+        }, 4000);
+      }
+
+      function resetAutoPlay() {
+        clearInterval(tableAutoPlayTimer);
+        startAutoPlay();
+      }
+
+      // 鼠标悬停暂停
+      const wrapper = document.querySelector('.table-carousel');
+      wrapper.addEventListener('mouseenter', () => clearInterval(tableAutoPlayTimer));
+      wrapper.addEventListener('mouseleave', startAutoPlay);
+
+      // 触摸滑动支持
+      let touchStartX = 0;
+      wrapper.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+        clearInterval(tableAutoPlayTimer);
+      }, { passive: true });
+      wrapper.addEventListener('touchend', e => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) {
+            tableCurrentPage = (tableCurrentPage + 1) % tableTotalPages;
+          } else {
+            tableCurrentPage = (tableCurrentPage - 1 + tableTotalPages) % tableTotalPages;
+          }
+          updateCarousel();
+        }
+        startAutoPlay();
+      }, { passive: true });
+
+      startAutoPlay();
+    }
+
+    // ================================================================
+    // 生成线路总览表（4张独立表格，每张7条）
+    // ================================================================
+    function buildTable() {
+      const track = document.getElementById('tableTrack');
+      const itemsPerTable = 7;  // 每张表格7条
+      const totalTables = 4;    // 共4张表格
+
+      tableTotalPages = totalTables;
+
+      for (let tableIdx = 0; tableIdx < totalTables; tableIdx++) {
+        const pageDiv = document.createElement('div');
+        pageDiv.className = 'table-page';
+
+        // 创建独立的表格容器
+        const tableWrap = document.createElement('div');
+        tableWrap.className = 'single-table-wrap';
+
+        const table = document.createElement('table');
+        table.className = 'single-table';
+
+        // 表头
+        const thead = document.createElement('thead');
+        thead.innerHTML = `
+          <tr>
+            <th>🗺️ 线路</th>
+            <th>天数</th>
+            <th>品类</th>
+          </tr>
+        `;
+        table.appendChild(thead);
+
+        // 表体
+        const tbody = document.createElement('tbody');
+
+        for (let row = 0; row < itemsPerTable; row++) {
+          const idx = tableIdx * itemsPerTable + row;
+
+          const tr = document.createElement('tr');
+
+          if (idx < routes.length) {
+            const r = routes[idx];
+            tr.innerHTML = `
+              <td class="td-name">${r.name}</td>
+              <td class="td-days">${r.days}</td>
+              <td><span class="td-type type-${r.type}">${typeEmoji[r.type] || ''} ${r.type}</span></td>
+            `;
+          } else {
+            // 空行占位
+            tr.innerHTML = `<td colspan="3">&nbsp;</td>`;
+            tr.className = 'empty-row';
+          }
+
+          tbody.appendChild(tr);
+        }
+
+        table.appendChild(tbody);
+        tableWrap.appendChild(table);
+        pageDiv.appendChild(tableWrap);
+        track.appendChild(pageDiv);
+      }
+
+      // 初始化轮播
+      initTableCarousel();
+    }
+
+    // ================================================================
+    // 筛选功能
+    // ================================================================
+    function initFilter() {
+      const tags = document.querySelectorAll('.filter-tag');
+      const cards = document.querySelectorAll('.route-card');
+
+      tags.forEach(tag => {
+        tag.addEventListener('click', function() {
+          tags.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+
+          const filter = this.dataset.filter;
+          let visibleCount = 0;
+
+          cards.forEach(card => {
+            if (
+              filter === 'all' ||
+              card.dataset.type === filter ||
+              card.dataset.days === filter
+            ) {
+              card.classList.remove('hidden');
+              visibleCount++;
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+        });
+      });
+    }
+
+    // ================================================================
+    // 滚动淡入动画
+    // ================================================================
+    function initScrollAnimate() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.08 });
+
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    }
+
+    // ================================================================
+    // 懒加载图片（额外polyfill）
+    // ================================================================
+    function initLazyLoad() {
+      if ('loading' in HTMLImageElement.prototype) return; // 原生支持
+      const imgs = document.querySelectorAll('img[loading="lazy"]');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            if (img.dataset.src) {
+              img.src = img.dataset.src;
+            }
+            observer.unobserve(img);
+          }
+        });
+      });
+      imgs.forEach(img => observer.observe(img));
+    }
+
+    // ================================================================
+    // 初始化
+    // ================================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      buildCarousel();
+      buildRouteCards();
+      buildTable();
+      initFilter();
+      initScrollAnimate();
+      initLazyLoad();
+    });
+  </script>
+
+</body>
+</html>
